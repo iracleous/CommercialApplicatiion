@@ -25,4 +25,9 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<CustomerOrder> orders;
+
+
+
+
+
 }
