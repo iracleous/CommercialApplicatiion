@@ -20,7 +20,8 @@ public class Customer {
     private String customerName;
     private String address;
     private Date dob;
-
+    @Column(columnDefinition = "bit default 1")
+    private boolean active;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonIgnore

@@ -27,7 +27,8 @@ public class CustomerController {
      */
 
     @GetMapping("customer/{id}")
-    public Customer getCustomer(@PathVariable int id) throws CustomerNotFoundException {
+    public Customer getCustomer(@PathVariable int id)
+            throws CustomerNotFoundException {
 
         return customerService.getCustomer(id);
     }
@@ -64,14 +65,65 @@ public class CustomerController {
             throws CustomerNotFoundException {
         return customerService.updateOne(id, customerDto);
     }
-    @GetMapping("customer/count")
-    public int getCustomerCount( ) {
-        return customerService.getCount();
+
+    //1.5
+    @DeleteMapping("customer/{id}" )
+    public String deleteCustomer(@PathVariable int id)
+            throws CustomerNotFoundException {
+        return customerService.delete(id);
     }
-    @GetMapping("customerid")
-    public Customer getCustomerById(@RequestParam int id) throws CustomerNotFoundException {
-        return customerService.getCustomer(id);
+
+    //1.6
+    @DeleteMapping("customer " )
+    public String deleteAllCustomer( )
+            throws CustomerNotFoundException {
+        return customerService.delete();
     }
+
+//1.7
+    @GetMapping("customers/name/{name}")
+    public List<Customer> getCustomersByName( @PathVariable String name)
+            throws CustomerNotFoundException {
+        return customerService.readByName(name);
+    }
+
+//1.8
+
+@PutMapping("customer/inactive/{id}")
+  public String softDelete( @PathVariable int id) throws CustomerNotFoundException {
+    return customerService.softDelete(id);
+}
+
+
+//1.9
+  @GetMapping("customers/ageFrom/{ageFrom}/ageTo/{ageTo}")
+  public List<Customer> getCustomersByAgeRange( @PathVariable int ageFrom, @PathVariable int ageTo)
+          throws CustomerNotFoundException {
+      return customerService.getCustomersByAgeRange(ageFrom, ageTo);
+  }
+
+  //1.10
+  @GetMapping("customers/pageSize/{size}/page/{page}")
+  public List<Customer> getCustomersPaged( @PathVariable int size,@PathVariable int page )
+          throws CustomerNotFoundException {
+      return customerService.getCustomersByPage(size, page);
+  }
+
+  //1.11
+  @GetMapping("customers/best/{howMany}")
+  public List<Customer> getBestCustomers( @PathVariable int howMany )
+          throws CustomerNotFoundException {
+      return customerService.getBestCustomers(howMany);
+  }
+
+//    @GetMapping("customer/count")
+//    public int getCustomerCount( ) {
+//        return customerService.getCount();
+//    }
+//    @GetMapping("customerid")
+//    public Customer getCustomerById(@RequestParam int id) throws CustomerNotFoundException {
+//        return customerService.getCustomer(id);
+//    }
 
 
 

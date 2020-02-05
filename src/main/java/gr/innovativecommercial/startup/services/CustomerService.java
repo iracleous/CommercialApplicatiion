@@ -8,7 +8,11 @@ import gr.innovativecommercial.startup.models.Product;
 import gr.innovativecommercial.startup.repositories.Customers;
 import gr.innovativecommercial.startup.repositories.Products;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.util.Date;
 import java.util.List;
@@ -21,6 +25,82 @@ import java.util.stream.StreamSupport;
 public class CustomerService {
     @Autowired
     private Customers customerRepo;
+
+
+    public List<Customer> getCustomersByAgeRange(int ageFrom, int ageTo)
+            throws CustomerNotFoundException {
+        //20,40
+        int thisYear= new Date().getYear();
+        int yearTo= thisYear -ageFrom ; //2000
+        int yearFrom  = thisYear - ageTo; //1980
+
+        try {
+            return
+                StreamSupport
+                   .stream(customerRepo.findAll().spliterator(), false)
+                   .filter(customer->
+                           customer.getDob().getYear()>=yearFrom)
+                   .filter(customer->
+                                customer.getDob().getYear()<=yearTo)
+                   .collect(Collectors.toList());
+        }
+        catch(Exception e){
+            throw new CustomerNotFoundException("no customers found");
+        }
+    }
+
+    public String softDelete(int id ) throws CustomerNotFoundException {
+       try {
+           Customer customer = customerRepo.findById(id).get();
+           customer.setActive(false);
+           customerRepo.save(customer);
+           return "ok";
+       }
+       catch(Exception e){
+           throw new CustomerNotFoundException("Customer id = " + id);
+       }
+
+
+    }
+
+    public List<Customer> getBestCustomers(int howMany) {
+        return   StreamSupport
+                .stream(customerRepo.findAll().spliterator(), false)
+                .sorted()
+                .limit(howMany)
+                .collect(Collectors.toList());
+
+
+    }
+
+
+
+ public List<Customer> getCustomersByPage(int size, int page){
+     Pageable selectedPageOf20Elements = PageRequest.of(page, size);
+
+    return customerRepo.findAll(selectedPageOf20Elements).toList();
+
+ }
+
+
+    public List<Customer> readByName(String name){
+        return
+                StreamSupport
+                       .stream(customerRepo.findAll().spliterator(), false)
+                       .filter(customer -> customer.getCustomerName().equals(name))
+                       .collect(Collectors.toList());
+     }
+
+
+
+    public String delete(int id)throws CustomerNotFoundException {
+       customerRepo.deleteById(id);
+       return "deleted";
+    }
+    public String delete()throws CustomerNotFoundException {
+        customerRepo.deleteAll();
+        return "deleted";
+    }
 
 
     public Customer updateOne(int id, CustomerDto customerDto) throws CustomerNotFoundException {
@@ -40,8 +120,6 @@ public class CustomerService {
                 StreamSupport
                         .stream(customerRepo.findAll().spliterator(), false)
                         .collect(Collectors.toList());
-
-
 
     }
 
@@ -67,13 +145,17 @@ public class CustomerService {
         return customerRepo.save(customer);
     }
 
-    public int getCount(){
-        List<String> cs=customerRepo.findByCustomerName("dimitris");
-      //  customerRepo. addPrefixToFirstName("Dr ");
-        return cs.size();
-     //   return  customerRepo.countCustomers();
-    }
-// 1;}   //
+
+
+
+
+//    public int getCount(){
+//        List<String> cs=customerRepo.findByCustomerName("dimitris");
+//      //  customerRepo. addPrefixToFirstName("Dr ");
+//        return cs.size();
+//     //   return  customerRepo.countCustomers();
+//    }
+//// 1;}   //
     public List<CustomerOrder> getCustomerOrders(int id){
         return  customerRepo.findById(id).get().getOrders();
     }
