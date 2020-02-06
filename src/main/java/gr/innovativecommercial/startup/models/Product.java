@@ -1,12 +1,11 @@
 package gr.innovativecommercial.startup.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -21,7 +20,8 @@ public class Product {
     private double productPrice;
     private int productQuantity;
 
-    @ManyToMany
-    private List<CustomerOrder> orders;
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private List<Orderdetail> orderdetails;
 }
 

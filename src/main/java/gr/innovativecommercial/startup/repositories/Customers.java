@@ -17,22 +17,22 @@ import java.util.List;
 @Repository
 public interface Customers extends PagingAndSortingRepository<Customer, Integer> {
 
+//JPQL
+//
+      @Query(value ="select count(id) FROM customer ", nativeQuery = true)
+      Integer   countCustomers();
+//
+     @Query(value = "SELECT *  FROM customer", nativeQuery = true)
+     List<Object[]> getAll();
 //
 //
-//     @Query(value ="select count(id) FROM customer ", nativeQuery = true)
-//     Integer   countCustomers();
 //
-//    @Query(value = "SELECT *  FROM customer", nativeQuery = true)
-//    List<Object[]> getAll();
+     @Query(value = "SELECT [customer_name]  FROM customer WHERE customer_name = :firstName", nativeQuery = true)
+     List<String> findByCustomerName(@Param("firstName") String firstName);
 //
-//
-//
-//    @Query(value = "SELECT [customer_name]  FROM customer WHERE customer_name = :firstName", nativeQuery = true)
-//    List<String> findByCustomerName(@Param("firstName") String firstName);
-//
-//    @Query(value = "UPDATE Customer SET customer_Name = :prefix + customer_Name", nativeQuery = true)
-//    @Modifying
-//    @Transactional
-//    void addPrefixToFirstName(@Param("prefix") String prefix);
+    @Query(value = "UPDATE Customer SET customer_Name = :prefix + customer_Name", nativeQuery = true)
+    @Modifying
+    @Transactional
+    void addPrefixToFirstName(@Param("prefix") String prefix);
 
 }

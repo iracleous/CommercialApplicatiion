@@ -1,24 +1,30 @@
 package gr.innovativecommercial.startup.controllers;
 
-import gr.innovativecommercial.startup.models.Customer;
-import gr.innovativecommercial.startup.models.CustomerOrder;
-import gr.innovativecommercial.startup.repositories.Orders;
-import gr.innovativecommercial.startup.services.ProductService;
+import gr.innovativecommercial.startup.dtos.OrderDto;
+import gr.innovativecommercial.startup.models.Customerorder;
+import gr.innovativecommercial.startup.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class OrderController {
     @Autowired
-    private Orders orderRepo;
+    private OrderService orderService;
 
     @GetMapping("order/{id}")
-    public CustomerOrder getOrder(@PathVariable int id){
-         return orderRepo.findById(id).get();
+    public Customerorder getOrder(@PathVariable int id){
+         return orderService.findById(id);
     }
 
+   @PostMapping("order")
+   public Customerorder createOrder(@RequestBody OrderDto orderDto) throws Exception {
+      return orderService.createOrder(orderDto);
+   }
+
+    @GetMapping("order/doscenario")
+    public String doScenario( ){
+        return orderService.doScenario();
+    }
 
 
 }

@@ -3,12 +3,9 @@ package gr.innovativecommercial.startup.services;
 import gr.innovativecommercial.startup.dtos.CustomerDto;
 import gr.innovativecommercial.startup.exceptions.CustomerNotFoundException;
 import gr.innovativecommercial.startup.models.Customer;
-import gr.innovativecommercial.startup.models.CustomerOrder;
-import gr.innovativecommercial.startup.models.Product;
+import gr.innovativecommercial.startup.models.Customerorder;
 import gr.innovativecommercial.startup.repositories.Customers;
-import gr.innovativecommercial.startup.repositories.Products;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -66,7 +61,7 @@ public class CustomerService {
     public List<Customer> getBestCustomers(int howMany) {
         return   StreamSupport
                 .stream(customerRepo.findAll().spliterator(), false)
-                .sorted()
+          //      .sorted()
                 .limit(howMany)
                 .collect(Collectors.toList());
 
@@ -156,7 +151,7 @@ public class CustomerService {
 //     //   return  customerRepo.countCustomers();
 //    }
 //// 1;}   //
-    public List<CustomerOrder> getCustomerOrders(int id){
-        return  customerRepo.findById(id).get().getOrders();
+    public List<Customerorder> getCustomerOrders(int id){
+        return  customerRepo.findById(id).get().getCustomerOrder();
     }
 }

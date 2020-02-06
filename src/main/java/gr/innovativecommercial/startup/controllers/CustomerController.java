@@ -3,7 +3,7 @@ package gr.innovativecommercial.startup.controllers;
 import gr.innovativecommercial.startup.dtos.CustomerDto;
 import gr.innovativecommercial.startup.exceptions.CustomerNotFoundException;
 import gr.innovativecommercial.startup.models.Customer;
-import gr.innovativecommercial.startup.models.CustomerOrder;
+import gr.innovativecommercial.startup.models.Customerorder;
 import gr.innovativecommercial.startup.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -74,7 +74,7 @@ public class CustomerController {
     }
 
     //1.6
-    @DeleteMapping("customer " )
+    @DeleteMapping("customer" )
     public String deleteAllCustomer( )
             throws CustomerNotFoundException {
         return customerService.delete();
@@ -129,7 +129,7 @@ public class CustomerController {
 
 
     @GetMapping("customer/{id}/orders")
-    public List<CustomerOrder> getCustomerOrders(@PathVariable int id) {
+    public List<Customerorder> getCustomerOrders(@PathVariable int id) {
         return customerService.getCustomerOrders(id);
     }
 

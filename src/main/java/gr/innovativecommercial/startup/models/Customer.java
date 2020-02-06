@@ -23,9 +23,9 @@ public class Customer {
     @Column(columnDefinition = "bit default 1")
     private boolean active;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer")
     @JsonIgnore
-    private List<CustomerOrder> orders;
+    private List<Customerorder> customerOrder;
 
 
 
